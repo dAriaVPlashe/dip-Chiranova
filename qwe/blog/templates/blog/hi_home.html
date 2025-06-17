@@ -1,0 +1,81 @@
+{% extends "blog/base2.html" %}
+{% load static %}
+{% block content %}
+{% if messages %}
+        {% for message in messages %}
+            <div class="hi-content-section">
+                <div class="error">
+                  {{ message }}
+                </div>
+             </div>
+        {% endfor %}
+  {% endif %}
+
+<div class="container-fluid">
+    <div class="container-fluid">
+    <div class="cont">
+    </div>
+</div>
+  {% if user.is_authenticated %}
+  {% else %}
+    <article class="media hi-content-section text-center">
+      <div class="media-body">
+        <p h1 class="article-title">Авторизуйтесь или зарегистрируйтесь, чтобы начать</p>
+        <div class="d-flex justify-content-center mt-4">
+          <a class="btn pag-hi-button mx-2" href="{% url 'login' %}">Вход</a>
+          <a class="btn pag-hi-button mx-2" href="{% url 'register' %}">Регистрация</a>
+        </div>
+      </div>
+    </article>
+  {% endif %}
+</div>
+<br><br><br>
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-sm">
+                <article class="media c-section text-center">
+                  <div class="media-body">
+                       <h4 class="article-title">Храните свои пароли в одном месте </h4>
+                       <p class="article-title">Используя StorePass, вы можете хранить пароли от сотни своих аккаунтов, помня лишь один</p>
+                  </div>
+                </article>
+            </div>
+            <div class="col-sm">
+                <article class="media c-section text-center">
+                    <div class="media-body">
+                       <h4 class="article-title">Создавай надежные и уникальные пароли в пару кликов</h4>
+                       <p class="article-title">Благодаря функции генератора, вы можете создать пароли, задавая его длину, наличие или отсутствие цифр, специальных символов, различных регистров </p>
+                    </div>
+                </article>
+            </div>
+            <div class="col-sm">
+                <article class="media c-section text-center">
+                    <div class="media-body">
+                       <h4 class="article-title">Оперативная поддержка</h4>
+                       <p class="article-title">По любому возникшему вопросу вы можете обратиться к поддержке сайта </p>
+                    </div>
+                </article>
+            </div>
+        </div>
+    </div>
+<br><br><br>
+
+<h1>Отзывы пользователей</h1>
+<a class="a-title " href="{% url 'feedback_list' %}">Все отзывы</a>
+<br>
+<div class="feedback-container">
+    {% if feedbacks %}
+        {% for feedback in feedbacks %}
+            <div class="feedback-item">
+                <a class="article-title" href="{% url 'user_feedback_detail' feedback_id=feedback.id %}">{{ feedback.title }}</a>
+                <small class="article-title">: {{ feedback.author.username }}</small>
+                <p class="article-title">{{ feedback.content }}</p>
+            </div>
+        {% endfor %}
+
+    {% else %}
+        <p>Пока нет отзывов.</p>
+    {% endif %}
+</div>
+
+{% endblock content %}

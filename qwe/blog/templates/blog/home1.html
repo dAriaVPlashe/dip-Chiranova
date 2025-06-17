@@ -1,0 +1,39 @@
+{% extends "blog/base.html" %}
+{% block content %}
+<div style="display: grid; grid-template-columns: 1fr auto;">
+    <a class="article-title" href="{% url 'generate-password' %}">Сгенерировать пароль</a>
+    <form method="get" action="{% url 'p_home' %}" style="justify-self: end;">
+        <input type="text" name="query" placeholder="Поиск по названию" />
+        <button type="submit">Поиск</button>
+    </form>
+</div>
+
+    {% for record in records %}
+      {% if record.author == user %}
+        <article class="media content-section">
+          <div class="media-body">
+              <p><a class="article-title" href="{% url 'record-detail' record.id %}">{{ record.title }}</a></p>
+
+          </div>
+        </article>
+      {% endif %}
+    {% empty %}
+        <p>Записей не найдено.</p>
+ {% endfor %}
+    <div class="pagination justify-content-center">
+    {% if is_paginated %}
+
+
+      {% for num in page_obj.paginator.page_range %}
+        {% if page_obj.number == num %}
+          <a class="btn btn-info mb-4 mr-1" href="?page={{ num }}">{{ num }}</a>
+        {% elif num > page_obj.number|add:'-3' and num < page_obj.number|add:'3' %}
+          <a class="btn btn-outline-info mb-4 mr-1" href="?page={{ num }}">{{ num }}</a>
+        {% endif %}
+      {% endfor %}
+
+
+
+    {% endif %}
+  </div>
+{% endblock content %}

@@ -1,0 +1,26 @@
+{% extends "blog/base.html" %}
+{% load crispy_forms_tags %}
+{% block content %}
+<div style="display: flex; justify-content: space-between; align-items: center;">
+    <h5><a class="a-title mb-4 mr-1" href="{% url 'generate-password' %}">Сгенерировать пароль</a></h5>
+    <div style="display: flex; align-items: center;">
+        <form method="get" action="{% url 'p_home' %}" style="display: flex; align-items: center;">
+            <input class='form-control mb-4 mr-1'
+                   type="text"
+                   placeholder="Поиск по названию"
+                   name="query"
+                   style="margin-right: 5px;"
+                   hx-get="{% url 'record-results' %}"
+                   hx-trigger="keyup changed delay:150ms"
+                   hx-target="#record-results">
+
+            <button type="submit" class="btn pag-button mb-4 mr-1">Сбросить</button>
+        </form>
+    </div>
+</div>
+
+<div id="record-results">
+    {% include 'blog/record_list.html' %}
+</div>
+
+{% endblock content %}

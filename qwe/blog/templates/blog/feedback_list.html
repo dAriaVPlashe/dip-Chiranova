@@ -1,0 +1,30 @@
+{% extends "blog/base.html" %}
+{% block content %}
+{% if messages %}
+        {% for message in messages %}
+            <div class="hi-content-section">
+                <div class="error">
+                  {{ message }}
+                </div>
+             </div>
+        {% endfor %}
+{% endif %}
+<h2 class="aa-title">Отзывы пользователей</h2>
+{% if user.is_authenticated %}
+<a class="btn image-button3 mb-4 mr-1 article-title" href="{% url 'feedback_create' %}">Написать отзыв</a> <br>
+{% endif %}
+{% if feedbacks %}
+    {% for feedback in feedbacks %}
+        <article class="media content-section">
+            <div class="media-body">
+                <a class="article-title"  href="{% url 'user_feedback_detail' feedback_id=feedback.id %}">{{ feedback.title }}</a></h2>
+                <small class="article-title">: {{ feedback.author.username }} {{ feedback.created_at }}</small>
+                <p class="article-title" >{{ feedback.content }}</p>
+             </div>
+        </article>
+    {% endfor %}
+
+{% else %}
+    <p>Пока нет отзывов.</p>
+{% endif %}
+{% endblock %}

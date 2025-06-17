@@ -1,0 +1,53 @@
+{% extends "blog/base.html" %}
+{% load crispy_forms_tags %}
+{% block content %}
+ {% if messages %}
+        {% for message in messages %}
+            <div class="hi-content-section">
+                <div class="error">
+                  {{ message }}
+                </div>
+             </div>
+        {% endfor %}
+  {% endif %}
+    <div class="content-section">
+        <div class="media">
+            <div class="media-body">
+                {% if user.profile.is_admin %}
+                    <small class="article-title">Аккаунт администратора</small>
+                {% endif %}
+                <h2 class="article-title">{{ user.username }}</h2>
+                <p class="article-title">{{ user.email }}</p>
+
+                <form class="article-title" method="post">
+                    {{ profile.hashed }}
+                </form>
+                <button id="edit-button" class="btn custom-outline">Редактировать</button>
+                {% if profile.can_change_codeword != False %}
+                <a class="btn custom-outline" href="{% url 'change_codeword' %}">Изменить дополнительный пароль</a>
+                {% endif %}
+                <div id="edit-form" style="display: none;">
+                    <h3 class="article-title">Редактировать профиль</h3>
+                    <form class="article-title" method="post" enctype="multipart/form-data" >
+                        {% csrf_token %}
+                        {{ u_form|crispy }}  <!-- Отображаем форму пользователя -->
+                        <button type="submit" class="btn custom-outline">Сохранить изменения</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        document.getElementById('edit-button').addEventListener('click', function() {
+            var form = document.getElementById('edit-form');
+            if (form.style.display === 'none') {
+                form.style.display = 'block';
+                this.textContent = 'Отменить';
+            } else {
+                form.style.display = 'none';
+                this.textContent = 'Редактировать';
+            }
+        });
+    </script>
+{% endblock content %}

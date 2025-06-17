@@ -1,0 +1,16 @@
+{% extends "blog/base.html" %}
+{% block content %}
+<h2>Введите кодовое слово для доступа к паролю</h2>
+
+{% if error %}
+<div class="alert alert-danger">{{ error }}</div>
+{% endif %}
+
+<form method="post">
+    {% csrf_token %}
+    <input type="text" name="codeword" placeholder="Введите кодовое слово" required>
+    <button type="submit">Отправить</button>
+</form>
+
+<a href="{% url 'home' %}">Назад на главную</a>
+{% endblock content %}

@@ -1,0 +1,15 @@
+{% extends "blog/base.html" %}
+{% block content %}
+<article class="media content-section">
+   <div class="media-body">
+          <h2 class="article-title" >Создать сообщение</h2>
+          <form class="article-title" method="POST">
+            {% csrf_token %}
+            {{ form.as_p }}
+            <button class="btn custom-outline mb-4 mr-1">Создать</button>
+          </form>
+   </div>
+</article>
+{% endblock %}
+
+

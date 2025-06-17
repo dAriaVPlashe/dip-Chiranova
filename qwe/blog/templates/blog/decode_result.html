@@ -1,0 +1,7 @@
+{% extends "blog/base.html" %}
+{% block content %}
+  <h2>Расшифрованный пароль для {{ record.title }}</h2>
+  <p>Логин: {{ record.ljg }}</p>
+  <p>Расшифрованный пароль: {{ decrypted_password }}</p>
+  <a href="{% url 'record-detail' record.id %}">Назад к записи</a>
+{% endblock content %}

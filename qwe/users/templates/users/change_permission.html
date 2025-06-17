@@ -1,0 +1,26 @@
+{% extends "blog/base.html" %}
+{% block content %}
+{% if messages %}
+        {% for message in messages %}
+            <div class="hi-content-section">
+                <div class="error">
+                  {{ message }}
+                </div>
+             </div>
+        {% endfor %}
+    {% endif %}
+<h3>Разрешение на изменение пароля шифрования для {{ profile.user.username }}</h3>
+<article class="media content-section" style="display: flex; justify-content: space-between; align-items: center;">
+    <div class="media-body">
+      <form method="post">
+        {% csrf_token %}
+        <p class="article-title">Текущая настройка: {{ profile.can_change_codeword }}</p>
+        <button class="btn custom-outline" type="submit">Переключить разрешение</button>
+      </form>
+    </div>
+</article>
+<a class="btn pag-button mb-4 mr-1" href="{% url 'user_list' %}">Назад к списку пользователей</a>
+{% endblock %}
+
+
+

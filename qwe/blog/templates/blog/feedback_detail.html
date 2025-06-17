@@ -1,0 +1,19 @@
+{% extends "blog/base.html" %}
+{% block content %}
+  <article class="media content-section">
+    <div class="media-body">
+        {% if request.user == feedback.author %}
+            <div class="d-flex justify-content-end">
+
+        <a class="btn image-button3" href="{% url 'feedback_edit' feedback_id=feedback.id %}"> </a>
+        <a class="btn image-button" href="{% url 'feedback_delete' feedback_id=feedback.id %}"> </a>            </div>
+         {% endif %}
+        <h2 class="article-title" >{{ feedback.title }}</h2>
+        <small class="article-title">Автор: {{ feedback.author.username }} {{ feedback.created_at }}</small>
+        <p class="article-title" >{{ feedback.content }}</p>
+
+        </div>
+
+     </div>
+  </article>
+{% endblock %}

@@ -1,0 +1,60 @@
+{% extends "blog/base2.html" %}
+{% load static %}
+{% block content %}
+{% if messages %}
+        {% for message in messages %}
+            <div class="hi-content-section">
+                <div class="error">
+                  {{ message }}
+                </div>
+             </div>
+        {% endfor %}
+  {% endif %}
+
+<div class="container-fluid">
+  {% if user.is_authenticated %}
+    <article class="media hi-content-section text-center">
+      <div class="media-body">
+            <img src="{% static 'blog/sd.png' %}" alt="StorePass" class="img-fluid mb-4" />
+      </div>
+    </article>
+  {% else %}
+    <article class="media hi-content-section text-center">
+      <div class="media-body">
+        <img src="{% static 'blog/sd.png' %}" alt="StorePass" class="img-fluid mb-4" />
+        <h1 class="article-title">Один пароль - сотни аккантов</h1>
+        <p>Чтобы продолжить, авторизируйтесь или зарегистрируйтесь.</p>
+        <div class="d-flex justify-content-center mt-4">
+          <a class="btn btn-primary mx-2" href="{% url 'login' %}">Вход</a>
+          <a class="btn btn-secondary mx-2" href="{% url 'register' %}">Регистрация</a>
+        </div>
+      </div>
+    </article>
+  {% endif %}
+</div>
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-sm">
+                <article class="media c-section text-center">
+                  <div class="media-body">
+                       <h4 class="article-title">Храниет свои пароли в одном месте </h4>
+                  </div>
+                </article>
+            </div>
+            <div class="col-sm">
+                <article class="media c-section text-center">
+                    <div class="media-body">
+                       <h4 class="article-title">Создавай надежные и уникальные пароли в пару кликов</h4>
+                    </div>
+                </article>
+            </div>
+            <div class="col-sm">
+                <article class="media c-section text-center">
+                    <div class="media-body">
+                       <h4 class="article-title">Оперативная поддержка</h4>
+                    </div>
+                </article>
+            </div>
+        </div>
+    </div>
+{% endblock content %}

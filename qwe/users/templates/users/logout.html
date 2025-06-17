@@ -1,0 +1,10 @@
+{% extends "blog/base.html" %}
+{% block content %}
+    <h2 class="aa-title" >Вы вышли из своей учетной записи</h2>
+   <p class="aa-title"> Если хотите продолжить работу на сайте, авторизуйтесь</p>
+
+        <small class="text-muted">
+            <a class="btn pag-button" href="{% url 'login' %}">Вход</a>
+        </small>
+    </div>
+{% endblock content %}

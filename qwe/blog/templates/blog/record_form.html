@@ -1,0 +1,33 @@
+{% extends "blog/base.html" %}
+{% load crispy_forms_tags %}
+{% block content %}
+{% if messages %}
+        {% for message in messages %}
+            <div class="hi-content-section">
+                <div class="error">
+                  {{ message }}
+                </div>
+             </div>
+        {% endfor %}
+  {% endif %}
+    <div class="content-section">
+        <form method="POST">
+            {% csrf_token %}
+            <fieldset class="form-group">
+               <div class="border-bottom mb-4">
+                <legend class="article-title">Убедитесь, что пароль, который вы сохраняете, актуален</legend>
+                {% for field in form %}
+                    <div class="form-group">
+                        {{ field.label|safe }}
+                        {{ field }}
+                    </div>
+                {% endfor %}
+               </div>
+            </fieldset>
+            <div class="form-group">
+                <button class="btn custom-outline " type="submit">Сохранить</button>
+            </div>
+        </form>
+    </div>
+{% endblock content %}
+

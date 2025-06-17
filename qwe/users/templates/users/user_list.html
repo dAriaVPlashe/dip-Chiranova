@@ -1,0 +1,28 @@
+{% extends "blog/base.html" %}
+{% load crispy_forms_tags %}
+{% block content %}
+{% if messages %}
+        {% for message in messages %}
+            <div class="hi-content-section">
+                <div class="error">
+                  {{ message }}
+                </div>
+             </div>
+        {% endfor %}
+    {% endif %}
+<h2 class="aa-title">Список пользователей</h2>
+{% for profile in profiles %}
+  <article class="media content-section" style="display: flex; justify-content: space-between; align-items: center;">
+    <div class="media-body">
+      <span class="article-title">{{ profile.user.username }}</span>
+      {% if profile.can_change_codeword == False %}
+        <span class="article-title">Запрещено</span>
+      {% endif %}
+      {% if profile.can_change_codeword != False %}
+        <span class="article-title">Разрешено</span>
+      {% endif %}
+    </div>
+    <a class="article-title" href="{% url 'change_permission' profile.user.id %}">Изменить разрешение</a>
+  </article>
+{% endfor %}
+{% endblock content %}

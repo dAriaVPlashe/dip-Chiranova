@@ -1,0 +1,49 @@
+{% for record in records %}
+  {% if record.author == user %}
+    <article class="media content-section">
+      <div class="media-body">
+          <h5><a class="article-title" href="{% url 'record-detail' record.id %}">{{ record.title }}</a></h5>
+          <small class="rticle-title">({{ record.created_at }})</small>
+      </div>
+    </article>
+  {% endif %}
+{% empty %}
+    <p>Записей не найдено.</p>
+{% endfor %}
+
+<div class="pagination justify-content-center">
+    {% if is_paginated %}
+        <div class="btn-group">
+            {% if page_obj.has_previous %}
+                <a class="btn pag-button mb-4 mr-1" href="?page=1&query={{ request.GET.query }}">Первая</a>
+                <a class="btn pag-button mb-4 mr-1" href="?page={{ page_obj.previous_page_number }}&query={{ request.GET.query }}">Предыдущая</a>
+            {% endif %}
+
+            {% for num in page_obj.paginator.page_range %}
+                {% if page_obj.number == num %}
+                    <a class="btn pag-button mb-4 mr-1" href="?page={{ num }}&query={{ request.GET.query }}">{{ num }}</a>
+                {% elif num > page_obj.number|add:'-3' and num < page_obj.number|add:'3' %}
+                    <a class="btn pag-button mb-4 mr-1" href="?page={{ num }}&query={{ request.GET.query }}">{{ num }}</a>
+                {% endif %}
+            {% endfor %}
+
+            {% if page_obj.has_next %}
+                <a class="btn pag-button mb-4 mr-1" href="?page={{ page_obj.next_page_number }}&query={{ request.GET.query }}">Следующая</a>
+                <a class="btn pag-button mb-4 mr-1" href="?page={{ page_obj.paginator.num_pages }}&query={{ request.GET.query }}">Последняя</a>
+            {% endif %}
+        </div>
+    {% endif %}
+</div>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        const searchInput = document.querySelector('input[name="query"]');
+        searchInput.addEventListener('keypress', function(event) {
+            if (event.key === 'Enter') {
+                event.preventDefault(); // предотвращаем стандартное поведение
+                this.form.submit(); // отправляем форму
+            }
+        });
+    });
+</script>
+

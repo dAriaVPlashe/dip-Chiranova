@@ -1,0 +1,67 @@
+{% extends "blog/base.html" %}
+{% block content %}
+  <article class="media content-section">
+    <div class="media-body">
+      <div class="article-metadata">
+        <p><a class="article-title" href="#">  {{ record.title }}</a></p>
+      </div>
+      <p class="article-content">Логин: {{ record.ljg }}</p>
+      <p>Пароль: {% for i in record.pas|length|make_list %}***{% endfor %}</p>
+
+      {% if record.author == user %}
+        <div>
+          <a class="btn btn-secondary btn-sm mt-1 mb-1" href="{% url 'record-update' record.id %}">Редактировать</a>
+          <a class="btn btn-danger btn-sm mt-1 mb-1" href="{% url 'record-delete' record.id %}">Удалить</a>
+          <form method="post" action="{% url 'decrypt_password' record.id %}" style="display:inline;">
+            {% csrf_token %}
+            <button type="submit" class="btn btn-primary btn-sm mt-1 mb-1">Декодировать</button>
+          </form>
+        </div>
+      {% endif %}
+    </div>
+  </article>
+
+  {% if decrypted_password %}
+    <div class="alert alert-info mt-3">
+      <h3>Расшифрованный пароль:</h3>
+      <p>{{ decrypted_password }}</p>
+    </div>
+  {% endif %}
+{% endblock content %}
+
+
+#Это точно работает views.py
+# class DecryptPasswordView(LoginRequiredMixin, View):
+#     def get(self, request, record_id):
+#         record = get_object_or_404(Record, id=record_id)
+#         return render(request, 'blog/record_detail.html', {'record': record})
+#
+#     def post(self, request, record_id):
+#         record = get_object_or_404(Record, id=record_id)
+#         decrypted_password = record.decrypt_password(record.pas)
+#
+#         return render(request, 'blog/record_detail.html', {
+#             'record': record,
+#             'decrypted_password': decrypted_password,
+#         })
+
+
+
+
+<!--{% extends "blog/base.html" %}-->
+<!--{% block content %}-->
+<!--  <article class="media content-section">-->
+<!--    <div class="media-body">-->
+<!--  <h2>Генерация пароля</h2>-->
+<!--  <form method="POST">-->
+<!--    {% csrf_token %}-->
+<!--    {{ form.as_p }}-->
+<!--    <button type="submit">Сгенерировать пароль</button>-->
+<!--  </form>-->
+<!--  {% if password %}-->
+<!--    <p class="article-title">Сгенерированный пароль: {{ password }}</p>-->
+<!--  {% endif %}-->
+<!--    </div>-->
+
+<!--  </article>-->
+<!--{% endblock %}-->

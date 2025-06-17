@@ -1,0 +1,23 @@
+{% extends "blog/base.html" %}
+{% block content %}
+{% if messages %}
+        {% for message in messages %}
+            <div class="hi-content-section">
+                <div class="error">
+                  {{ message }}
+                </div>
+             </div>
+        {% endfor %}
+    {% endif %}
+<article class="media content-section" style="display: flex; justify-content: space-between; align-items: center;">
+    <div class="media-body">
+      <h2>Изменить пароль шифрования</h2>
+        <form method="post" class="article-title">
+          {% csrf_token %}
+          {{ form.as_p }}
+          <button class="btn custom-outline" type="submit">Сохранить</button>
+        </form>
+      <a class="btn custom-outline" href="{% url 'profile' %}">Назад к профилю</a>
+      </div>
+</article>
+{% endblock %}

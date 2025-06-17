@@ -1,0 +1,93 @@
+{% extends "blog/base.html" %}
+{% load crispy_forms_tags %}
+{% block content %}
+  <article class="media content-section">
+    <div class="media-body">
+      {% if record.author == user %}
+      <form method="post" id="codewordForm"> <!-- Форма для ввода кодового слова -->
+        {% csrf_token %}
+          <div style="display: flex; align-items: center;">
+              <input class='form-control mb-1 mr-1'
+                     type="text"
+                     name="codeword"
+                     placeholder="Пароль декодирования"
+                     onkeydown="return handleEnter(event);"
+                     style="width: 250px; margin-left: auto;">
+              <a  class="btn image-button2" onclick="handlePassword({{ record.id }})" title="Показать пароль"></a>
+
+              <!-- Контейнер с кнопками редактирования и удаления -->
+              <div id="action-buttons" style="display: none; margin-left: 10px;">
+                <a class="btn image-button3" href="{% url 'record-update' record.id %}" title="Редактировать"></a>
+                <a class="btn image-button" href="{% url 'record-delete' record.id %}" title="Удалить"></a>
+              </div>
+          </div>
+      </form>
+      {% endif %}
+       <div class="article-metadata">
+        <p class="article-title">Название сайта: {{ record.title }} </p>
+        {% if record.link != ''  %}
+          <p class="article-title">Ссылка на сайт: <a href="{{ record.link }}" target="_blank" rel="noopener noreferrer">{{ record.link }}</a></p>
+        {% endif %}
+      </div>
+      <p class="article-content">Логин: {{ record.ljg }}</p>
+      <p class="article-content">Пароль: <span id="password-display">******</span></p>
+      {% if record.com != 'Вы можете добавить комментарий' and record.com != ''  %}
+       <p class="article-content">Комментарий: {{ record.com }}</p>
+      {% endif %}
+    </div>
+  </article>
+
+  <script>
+    let passwordVisible = false; // Отслеживаем состояние пароля
+
+    function handlePassword(recordId) {
+      const passwordDisplay = document.getElementById('password-display');
+      const codewordInput = document.querySelector('input[name="codeword"]');
+      const actionButtons = document.getElementById('action-buttons');
+      const codeword = codewordInput.value; // Получаем кодовое слово из поля ввода
+
+      if (passwordVisible) {
+          // Скрываем пароль и кнопки
+          passwordDisplay.textContent = '******';
+          passwordVisible = false;
+          actionButtons.style.display = 'none';
+      } else {
+          fetch(`/decrypt_password/${recordId}/`, {
+              method: 'POST',
+              headers: {
+                  'Content-Type': 'application/json',
+                  'X-CSRFToken': '{{ csrf_token }}'
+              },
+              body: JSON.stringify({ codeword: codeword }) // Отправляем кодовое слово
+          })
+          .then(response => {
+              if (!response.ok) {
+                  return response.json().then(data => { throw new Error(data.error_message || 'Ошибка сервера'); });
+              }
+              return response.json();
+          })
+          .then(data => {
+              if (data.decrypted_password) {
+                  passwordDisplay.textContent = data.decrypted_password;
+                  passwordVisible = true;
+                  actionButtons.style.display = 'flex'; // Показываем кнопки
+              } else {
+                  alert('Пароль не найден.');
+              }
+          })
+          .catch(error => {
+              console.error('Ошибка:', error);
+              alert('Ошибка: ' + error.message);
+              actionButtons.style.display = 'none'; // Скрываем кнопки при ошибке
+          });
+      }
+    }
+
+    function handleEnter(event) {
+      if (event.key === 'Enter') {
+          event.preventDefault(); // Предотвращаем отправку формы
+          handlePassword({{ record.id }}); // Вызываем функцию для обработки пароля
+      }
+    }
+  </script>
+{% endblock content %}

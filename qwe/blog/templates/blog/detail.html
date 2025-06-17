@@ -1,0 +1,55 @@
+{% extends "blog/base.html" %}
+{% block content %}
+  <article class="media content-section">
+    <div class="media-body">
+        {% if message.author == user %}
+            <div class="d-flex justify-content-end">
+              <a class="btn image-button3" href="{% url  'message-update' message.id  %}"></a>
+              <a class="btn image-button" href="{% url 'record-delete-Message' message.id %}"></a>
+            </div>
+         {% endif %}
+      <small class="article-title">{{ message.author }}</small ><h3 class="article-title" >{{ message.title }}</h3>
+      <p class="article-title">{{ message.content }}</p>
+      </div>
+  </article>
+
+ <article class="media content-section">
+    <div class="media-body">
+  <form  class="article-title" method="POST">
+    {% csrf_token %}
+    {{ response_form.as_p }}
+    <button class="btn custom-outline mb-4 mr-1">Отправить</button>
+  </form>
+    </div>
+  </article>
+
+
+
+  <article class="media content-section">
+    <div class="media-body">
+        <h3 class="article-title" >Ответы:</h3>
+        <ul>
+          {% for response in responses %}
+            <article class="media content-section">
+              <p class="article-title">
+                {{ response.admin.username }}
+                {% if response.admin.profile.is_admin %}
+                  <small class="article-title">(админ)</small>
+                {% endif %}
+                <small class="article-title">:({{ response.created_at }})</small>
+              </p>
+              <p class="article-title">{{ response.content }}</p>
+
+                {% if response.admin == user %}
+                    <a class="btn image-button" href="#" onclick="event.preventDefault(); document.getElementById('delete-response-{{ response.id }}').submit();"> </a>
+                    <form id="delete-response-{{ response.id }}" action="{% url 'delete-response' response.id %}" method="POST" style="display:none;">
+                        {% csrf_token %}
+                    </form>
+                {% endif %}
+
+            </article>
+          {% endfor %}
+        </ul>
+    </div>
+  </article>
+{% endblock %}
