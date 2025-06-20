@@ -35,8 +35,8 @@ class RecordForm(forms.ModelForm):
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
         for fieldname, field in self.fields.items():
-            field.widget.attrs.update({'class': 'form-control'})  # Применяем класс ко всем полям
-            field.label = f'<p class="article-title">{field.label}</p>'  # Оборачиваем метку в <p>
+            field.widget.attrs.update({'class': 'form-control'})  
+            field.label = f'<p class="article-title">{field.label}</p>' 
 
 
 class PasswordGeneratorForm(forms.ModelForm):
@@ -53,8 +53,7 @@ class PasswordGeneratorForm(forms.ModelForm):
             'length': forms.NumberInput(attrs={
                 'min': 1,
                 'max': 100,
-                'class': 'form-control',  # Применяем класс для стилизации
-                # 'style': 'background-color: green;',  # Устанавливаем светло-зеленый цвет фона
+                'class': 'form-control',  
                 'include_digits': forms.CheckboxInput(attrs={'class': 'form-check-input', 'placeholder': 'Длина пароля'}),
             }),
 
@@ -65,10 +64,7 @@ class PasswordGeneratorForm(forms.ModelForm):
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
-        # for fieldname, field in self.fields.items():
-        #     if fieldname == 'length':
-        #         field.widget.attrs.update({'style': 'background-color: lightgreen;'})  # Задаем цвет для поля length
-        #     field.label = f'<p class="article-title">{field.label}</p>'  # Оборачиваем метку в <p>
+       
 
 class FeedbackForm(forms.ModelForm):
     class Meta:
