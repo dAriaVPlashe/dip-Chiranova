@@ -10,8 +10,8 @@ import hashlib
 class Record(models.Model):
     title = models.CharField(max_length=1000)
     created_at = models.DateTimeField(auto_now_add=True)
-    ljg = models.CharField(max_length=1000)  # Логин пользователя
-    pas = models.CharField(max_length=1000)  # Поле для хранения зашифрованного пароля
+    ljg = models.CharField(max_length=1000)  
+    pas = models.CharField(max_length=1000) 
     link = models.CharField(max_length=1000, default='', blank=True)
     date_posted = models.DateTimeField(default=timezone.now)
     author = models.ForeignKey(User, on_delete=models.CASCADE)
@@ -28,7 +28,6 @@ class Record(models.Model):
         return fernet.decrypt(encrypted_password.encode()).decode()
 
     def save(self, *args, **kwargs):
-        # Получаем кодовое слово из профиля автора
         profile = Profile.objects.get(user=self.author)
         codeword = profile.hashed
 
